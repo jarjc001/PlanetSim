@@ -37,7 +37,7 @@ def main():
 
     neptune = pl.Planet(-30.0611, 0, 10, NAVY, 17.132, "Neptune")
 
-    planets: list = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
+    planets: list = [sun, mercury, venus, earth, mars]#, jupiter, saturn, uranus, neptune]
 
     while run:
         # max fps

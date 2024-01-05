@@ -5,7 +5,7 @@ import math
 
 class Planet:
 
-    def __init__(self, x: float, y: float, radius: float, colour: tuple, mass: float, name: str, isSun: bool=False):
+    def __init__(self, x: float, y: float, radius: float, colour: tuple, mass: float, name: str, isSun: bool = False):
         """
         Planet Object to house the properties of each planet
         :param isSun:
@@ -66,6 +66,18 @@ class Planet:
         # pygame sets 0,0 to top left corner
         x = self.x * SCALE + (WIDTH / 2)
         y = self.y * SCALE + (HEIGHT / 2)
+
+
+        ####################################
+        # if len(self.orbit) > 2:
+        #     updated_points = []
+        #     for point in self.orbit:
+        #         x = x * SCALE + (WIDTH / 2)
+        #         y = y * SCALE + (HEIGHT / 2)
+        #         updated_points.append((x, y))
+        #
+        #     pg.draw.lines(win, self.colour, False, updated_points, 1)
+
         pg.draw.circle(win, self.colour, (x, y), self.radius)
 
     def attraction(self, other):
@@ -102,6 +114,7 @@ class Planet:
 
         self.x += self.x_vel * TIMESTEP
         self.y += self.y_vel * TIMESTEP
+        self.orbit.append((self.x, self.y))
 
     def cal_orbit_vel(self):
         # Standard gravitational parameter
