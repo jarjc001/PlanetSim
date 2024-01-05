@@ -1,8 +1,8 @@
 import numpy as np
 import pygame as pg
 import math
-from package import planet as pl
-from package.constants import *
+from object_package import planet as pl
+from object_package.constants import *
 
 pg.init()
 
@@ -19,22 +19,25 @@ def main():
     clock = pg.time.Clock()
 
     # add bodies to sim
-    sun = pl.Planet(0, 0, 40, YELLOW, 1.989e30 / EARTH_MASS, "Sun")
-    sun.isSun = True
+    sun = pl.Planet(0, 0, 20, YELLOW, (SUN_MASS / EARTH_MASS), "Sun", True)
 
-    mercury = pl.Planet(-0.3871, 0, 6, GREY, 0.0553, "Mercury")
-    mercury.y_vel = 47.4e3
+    mercury = pl.Planet(-0.3871, 0, 3, GREY, 0.0553, "Mercury")
 
-    venus = pl.Planet(-0.7233, 0, 14, GREEN, 0.8150, "Venus")
-    venus.y_vel = 35.02e3
+    venus = pl.Planet(-0.7233, 0, 6, GREEN, 0.8150, "Venus")
 
-    earth = pl.Planet(-1, 0, 16, BLUE, 1, "Earth")
-    earth.y_vel = 29.783e3
+    earth = pl.Planet(-1, 0, 6, BLUE, 1, "Earth")
 
-    mars = pl.Planet(-1.5237, 0, 8, RED, 0.1074, "Mars")
-    mars.y_vel = 24.077e3
+    mars = pl.Planet(-1.5237, 0, 5, RED, 0.1074, "Mars")
 
-    planets: list = [sun, mercury, venus, earth, mars]
+    jupiter = pl.Planet(-5.2028, 0, 12, ORANGE, 317.894, "Jupiter")
+
+    saturn = pl.Planet(-9.5388, 0, 11, GOLD, 95.184, "Saturn")
+
+    uranus = pl.Planet(-19.1914, 0, 9, TEAL, 14.537, "Uranus")
+
+    neptune = pl.Planet(-30.0611, 0, 10, NAVY, 17.132, "Neptune")
+
+    planets: list = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
 
     while run:
         # max fps
@@ -48,7 +51,7 @@ def main():
                 run = False
 
         for planet in planets:
-            planet.update_postion(planets)
+            planet.update_position(planets)
             planet.draw(WIN)
 
         pg.display.update()

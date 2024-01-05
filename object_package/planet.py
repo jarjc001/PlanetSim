@@ -1,14 +1,15 @@
-from package.constants import *
+from object_package.constants import *
 import pygame as pg
 import math
 
 
 class Planet:
 
-    def __init__(self, x: float, y: float, radius: float, colour: tuple, mass: float, name: str):
+    def __init__(self, x: float, y: float, radius: float, colour: tuple, mass: float, name: str, isSun: bool=False):
         """
         Planet Object to house the properties of each planet
-        :param x:   x position (AU)
+        :param isSun:
+        :param x:   x position (AU)  (normally the Semimajor axis)
         :param y:   y position (AU)
         :param radius:  radius of the planet in the Sim (pixels) (Not real radius)
         :param colour: colour of the planet in the sim
@@ -16,19 +17,50 @@ class Planet:
         :param name: name of the planet
         """
 
-        self.x = x*AU
-        self.y = y*AU
+        self.x = x * AU
+        self.y = y * AU
         self.radius = radius
         self.colour = colour
         self.mass = mass * EARTH_MASS
         self.name = name
 
         self.orbit = []
-        self.isSun = False
+        self.isSun = isSun
         self.distance_to_sun = 0
 
+        if isSun:
+            self.y_vel = 0
+        else:
+            self.y_vel = self.cal_orbit_vel()
         self.x_vel = 0
-        self.y_vel = 0
+
+    # def __init__(self, x: float, y: float,
+    #              radius: float, colour: tuple,
+    #              mass: float, name: str,
+    #              x_vel: float = 0, y_vel: float = 0):
+    #     """
+    #     Planet Object to house the properties of each planet
+    #     :param x:   x position (AU)  (normally the Semimajor axis)
+    #     :param y:   y position (AU)
+    #     :param radius:  radius of the planet in the Sim (pixels) (Not real radius)
+    #     :param colour: colour of the planet in the sim
+    #     :param mass: mass of planet (earth masses)
+    #     :param name: name of the planet
+    #     """
+    #
+    #     self.x = x * AU
+    #     self.y = y * AU
+    #     self.radius = radius
+    #     self.colour = colour
+    #     self.mass = mass * EARTH_MASS
+    #     self.name = name
+    #
+    #     self.orbit = []
+    #     self.isSun = False
+    #     self.distance_to_sun = 0
+    #
+    #     self.x_vel = x_vel
+    #     self.y_vel = y_vel
 
     def draw(self, win):
         # pygame sets 0,0 to top left corner
@@ -45,18 +77,18 @@ class Planet:
         other_x, other_y = other.x, other.y
         distance_x = other_x - self.x
         distance_y = other_y - self.y
-        distance = math.sqrt(distance_x**2 + distance_y**2)
+        distance = math.sqrt(distance_x ** 2 + distance_y ** 2)
 
         if other.isSun:
             self.distance_to_sun = distance
 
-        force = G * self.mass * other.mass / distance**2
+        force = G * self.mass * other.mass / distance ** 2
         theta = math.atan2(distance_y, distance_x)
         force_x = math.cos(theta) * force
         force_y = math.sin(theta) * force
         return force_x, force_y
 
-    def update_postion(self, planets):
+    def update_position(self, planets):
         total_fx = total_fy = 0
         for planet in planets:
             if self == planet:
@@ -70,6 +102,11 @@ class Planet:
 
         self.x += self.x_vel * TIMESTEP
         self.y += self.y_vel * TIMESTEP
+
+    def cal_orbit_vel(self):
+        # Standard gravitational parameter
+        mu = G * (SUN_MASS + self.mass)
+        return math.sqrt(mu / abs(self.x))
 
     def __str__(self):
         return f"Planet: {self.name}, mass: {self.mass}, radius: {self.radius}"

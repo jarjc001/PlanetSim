@@ -1,1 +1,2 @@
 "# PlanetSim" 
+A basic simulation of solar system orbits using Newtonian physics, the sum of gravitational forces of each body in the system. The scale of the planets’ radii is not accurate. Got this idea from Tech With Tim YT.
