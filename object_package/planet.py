@@ -66,19 +66,22 @@ class Planet:
         # pygame sets 0,0 to top left corner
         x = self.x * SCALE + (WIDTH / 2)
         y = self.y * SCALE + (HEIGHT / 2)
+        pg.draw.circle(win, self.colour, (x, y), self.radius)
 
 
         ####################################
-        # if len(self.orbit) > 2:
-        #     updated_points = []
-        #     for point in self.orbit:
-        #         x = x * SCALE + (WIDTH / 2)
-        #         y = y * SCALE + (HEIGHT / 2)
-        #         updated_points.append((x, y))
-        #
-        #     pg.draw.lines(win, self.colour, False, updated_points, 1)
+        if len(self.orbit) > 2:
+            updated_points = []
+            for point in self.orbit:
+                x, y = point
+                x = x * SCALE + (WIDTH / 2)
+                y = y * SCALE + (HEIGHT / 2)
+                updated_points.append((x, y))
 
-        pg.draw.circle(win, self.colour, (x, y), self.radius)
+            print(updated_points)
+            pg.draw.lines(win, self.colour, False, updated_points, 1)
+
+
 
     def attraction(self, other):
         """
@@ -101,7 +104,8 @@ class Planet:
         return force_x, force_y
 
     def update_position(self, planets):
-        total_fx = total_fy = 0
+        total_fx = 0
+        total_fy = 0
         for planet in planets:
             if self == planet:
                 continue
