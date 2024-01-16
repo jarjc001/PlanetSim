@@ -1,8 +1,10 @@
 import numpy as np
 import pygame as pg
 import math
+#
 from object_package import planet as pl
 from object_package.constants import *
+from object_package import dao as dao
 
 pg.init()
 
@@ -57,6 +59,7 @@ def main():
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
+                print(dao.start_dataframe(planets))
                 run = False
 
         for planet in planets:

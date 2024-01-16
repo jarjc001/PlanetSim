@@ -124,7 +124,7 @@ class Planet:
         self.orbit.append((self.x, self.y))
         self.cal_orbit_radius()
         # store data as x,y,vx,vy,r,t for each body
-        self.datapoints.append((self.x,self.y,self.x_vel,self.y_vel,self.distance_to_sun,time*TIMESTEP))
+        self.datapoints.append([self.x,self.y,self.x_vel,self.y_vel,self.distance_to_sun,time*TIMESTEP])
 
 
 

@@ -1,3 +1,3 @@
-from controller import *
+from controller import main
 
 main()
