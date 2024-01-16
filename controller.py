@@ -14,6 +14,7 @@ pg.display.set_caption("Planet Sim")
 # only closes on x button
 def main():
     run = True
+    time = 0
 
     # sets a max frame rate
     clock = pg.time.Clock()
@@ -39,9 +40,17 @@ def main():
 
     planets: list = [sun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune]
 
+    # set_up_time = pg.time.get_ticks()
+    frame_counter = 0
+
     while run:
         # max fps
-        clock.tick(60)
+        clock.tick(FRAME_RATE)
+        # #time += clock.get_time()
+        # time = pg.time.get_ticks() - set_up_time
+
+        frame_counter += 1
+
 
         # refresh
         WIN.fill((0, 0, 0))
@@ -51,7 +60,7 @@ def main():
                 run = False
 
         for planet in planets:
-            planet.update_position(planets)
+            planet.update_position(planets,frame_counter)
             planet.draw(WIN)
 
         pg.display.update()

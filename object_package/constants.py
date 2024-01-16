@@ -15,6 +15,7 @@ SCALE = 200 / AU
 # timestep of sim ->  per frame
 DAY = 3600 * 24
 TIMESTEP = DAY
+FRAME_RATE = 60
 
 # width and height of sim window
 WIDTH: int = 800

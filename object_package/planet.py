@@ -4,6 +4,10 @@ import math
 
 
 class Planet:
+    """
+    Object for each planet
+    Will control the physics and the drawing of it
+    """
 
     def __init__(self, x: float, y: float, radius: float, colour: tuple, mass: float, name: str, isSun: bool = False):
         """
@@ -23,6 +27,9 @@ class Planet:
         self.colour = colour
         self.mass = mass * EARTH_MASS
         self.name = name
+
+        # store data as x,y,vx,vy,t for each body
+        self.datapoints = []
 
         self.orbit = []
         self.isSun = isSun
@@ -68,7 +75,6 @@ class Planet:
         y = self.y * SCALE + (HEIGHT / 2)
         pg.draw.circle(win, self.colour, (x, y), self.radius)
 
-
         ####################################
         if len(self.orbit) > 2:
             updated_points = []
@@ -78,10 +84,7 @@ class Planet:
                 y = y * SCALE + (HEIGHT / 2)
                 updated_points.append((x, y))
 
-            print(updated_points)
             pg.draw.lines(win, self.colour, False, updated_points, 1)
-
-
 
     def attraction(self, other):
         """
@@ -103,7 +106,7 @@ class Planet:
         force_y = math.sin(theta) * force
         return force_x, force_y
 
-    def update_position(self, planets):
+    def update_position(self, planets, time):
         total_fx = 0
         total_fy = 0
         for planet in planets:
@@ -119,11 +122,21 @@ class Planet:
         self.x += self.x_vel * TIMESTEP
         self.y += self.y_vel * TIMESTEP
         self.orbit.append((self.x, self.y))
+        self.cal_orbit_radius()
+        # store data as x,y,vx,vy,r,t for each body
+        self.datapoints.append((self.x,self.y,self.x_vel,self.y_vel,self.distance_to_sun,time*TIMESTEP))
+
+
+
+
+    def cal_orbit_radius(self):
+        self.distance_to_sun = math.sqrt(self.x ** 2 + self.y ** 2)
 
     def cal_orbit_vel(self):
         # Standard gravitational parameter
         mu = G * (SUN_MASS + self.mass)
-        return math.sqrt(mu / abs(self.x))
+        self.distance_to_sun = math.sqrt(self.x ** 2 + self.y ** 2)
+        return math.sqrt(mu / abs(self.distance_to_sun))
 
     def __str__(self):
         return f"Planet: {self.name}, mass: {self.mass}, radius: {self.radius}"
