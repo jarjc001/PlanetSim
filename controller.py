@@ -59,7 +59,7 @@ def main():
 
         for event in pg.event.get():
             if event.type == pg.QUIT:
-                print(dao.start_dataframe(planets))
+                dao.export_data(dao.start_dataframe(planets))
                 run = False
 
         for planet in planets:
